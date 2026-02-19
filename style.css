@@ -46,12 +46,12 @@ h1 {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: var(--container-bg);
+    background-color: var(--text-color);
     border: 1px solid var(--number-border);
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    color: var(--text-color);
+    color: var(--container-bg);
     font-size: 14px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: background-color var(--transition-speed), color var(--transition-speed);

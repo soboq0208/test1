@@ -6,7 +6,7 @@ const themeToggle = document.getElementById('theme-toggle');
 themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
     const isDarkMode = document.body.classList.contains('dark-mode');
-    themeToggle.textContent = isDarkMode ? 'White Mode' : 'Dark Mode';
+    themeToggle.textContent = isDarkMode ? 'Dark Mode' : 'White Mode';
 });
 
 // Lotto Number Generation with Animation
