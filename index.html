@@ -27,8 +27,11 @@
         <div class="container">
             <h2>동물상 테스트 (강아지 vs 고양이)</h2>
             <div class="ai-section">
-                <button type="button" class="submit-btn" onclick="init()">카메라 시작하기</button>
-                <div id="webcam-container"></div>
+                <p>사진을 업로드하여 동물상을 확인해보세요!</p>
+                <input type="file" id="image-upload" accept="image/*" class="file-input">
+                <div id="image-preview-container">
+                    <img id="upload-preview" src="#" alt="미리보기" style="display:none; max-width: 100%; border-radius: 10px; margin-top: 20px; border: 3px solid var(--number-border);">
+                </div>
                 <div id="label-container"></div>
             </div>
         </div>
@@ -71,23 +74,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
     <script type="text/javascript">
         const URL = "https://teachablemachine.withgoogle.com/models/PZC0yiqCS/";
-        let model, webcam, labelContainer, maxPredictions;
+        let model, labelContainer, maxPredictions;
 
-        async function init() {
+        async function loadModel() {
             const modelURL = URL + "model.json";
             const metadataURL = URL + "metadata.json";
-
             model = await tmImage.load(modelURL, metadataURL);
             maxPredictions = model.getTotalClasses();
-
-            const flip = true;
-            webcam = new tmImage.Webcam(200, 200, flip);
-            await webcam.setup();
-            await webcam.play();
-            window.requestAnimationFrame(loop);
-
-            document.getElementById("webcam-container").innerHTML = '';
-            document.getElementById("webcam-container").appendChild(webcam.canvas);
+            
             labelContainer = document.getElementById("label-container");
             labelContainer.innerHTML = '';
             for (let i = 0; i < maxPredictions; i++) {
@@ -95,21 +89,37 @@
             }
         }
 
-        async function loop() {
-            webcam.update();
-            await predict();
-            window.requestAnimationFrame(loop);
-        }
+        // Load model on startup
+        loadModel();
 
-        async function predict() {
-            if (!model || !webcam) return;
-            const prediction = await model.predict(webcam.canvas);
+        async function predict(imageElement) {
+            const prediction = await model.predict(imageElement);
             for (let i = 0; i < maxPredictions; i++) {
                 const classPrediction =
                     prediction[i].className + ": " + (prediction[i].probability * 100).toFixed(0) + "%";
                 labelContainer.childNodes[i].innerHTML = classPrediction;
             }
         }
+
+        const imageUpload = document.getElementById('image-upload');
+        const uploadPreview = document.getElementById('upload-preview');
+
+        imageUpload.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                uploadPreview.src = event.target.result;
+                uploadPreview.style.display = 'block';
+                
+                // Wait for image to load before predicting
+                uploadPreview.onload = () => {
+                    predict(uploadPreview);
+                };
+            };
+            reader.readAsDataURL(file);
+        });
     </script>
     <script src="main.js"></script>
 </body>

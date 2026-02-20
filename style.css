@@ -168,6 +168,21 @@ h1, h2 {
     gap: 20px;
 }
 
+.file-input {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed var(--number-border);
+    border-radius: 5px;
+    background-color: var(--number-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.file-input:hover {
+    border-color: var(--button-bg);
+}
+
 #webcam-container {
     margin-top: 20px;
     border-radius: 10px;
