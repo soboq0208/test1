@@ -3,24 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lotto & Animal Face Test</title>
+    <title>Multi-Service App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button id="theme-toggle">Dark Mode</button>
+    <div class="nav-container">
+        <div class="tabs">
+            <button class="tab-btn active" data-target="lotto-section">Lotto</button>
+            <button class="tab-btn" data-target="animal-section">Animal Test</button>
+        </div>
+        <button id="theme-toggle">Dark Mode</button>
+    </div>
     
-    <div class="container">
-        <h1>Lotto Number Generator</h1>
-        <button id="generator-btn">Generate Numbers</button>
-        <div id="lotto-numbers" class="lotto-numbers-container"></div>
+    <div id="lotto-section" class="service-section active">
+        <div class="container">
+            <h1>Lotto Number Generator</h1>
+            <button id="generator-btn">Generate Numbers</button>
+            <div id="lotto-numbers" class="lotto-numbers-container"></div>
+        </div>
     </div>
 
-    <div class="container">
-        <h2>동물상 테스트 (강아지 vs 고양이)</h2>
-        <div class="ai-section">
-            <button type="button" class="submit-btn" onclick="init()">카메라 시작하기</button>
-            <div id="webcam-container"></div>
-            <div id="label-container"></div>
+    <div id="animal-section" class="service-section">
+        <div class="container">
+            <h2>동물상 테스트 (강아지 vs 고양이)</h2>
+            <div class="ai-section">
+                <button type="button" class="submit-btn" onclick="init()">카메라 시작하기</button>
+                <div id="webcam-container"></div>
+                <div id="label-container"></div>
+            </div>
         </div>
     </div>
 
@@ -92,6 +102,7 @@
         }
 
         async function predict() {
+            if (!model || !webcam) return;
             const prediction = await model.predict(webcam.canvas);
             for (let i = 0; i < maxPredictions; i++) {
                 const classPrediction =

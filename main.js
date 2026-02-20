@@ -1,6 +1,28 @@
 const generatorBtn = document.getElementById('generator-btn');
 const lottoNumbersContainer = document.getElementById('lotto-numbers');
 const themeToggle = document.getElementById('theme-toggle');
+const tabBtns = document.querySelectorAll('.tab-btn');
+const serviceSections = document.querySelectorAll('.service-section');
+
+// Tab Switching Logic
+tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const target = btn.getAttribute('data-target');
+        
+        // Update button active state
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        // Update section visibility
+        serviceSections.forEach(section => {
+            if (section.id === target) {
+                section.classList.add('active');
+            } else {
+                section.classList.remove('active');
+            }
+        });
+    });
+});
 
 // Theme Toggle Logic
 themeToggle.addEventListener('click', () => {
